@@ -1,0 +1,399 @@
+﻿@page
+@model MindMastery1.Views.Home.TestPersonalitateModel
+@{
+    int setNumber = 1;
+    int indiceIntrebare = 1;
+}
+<link rel="stylesheet" href="~/css/TestPersonalitatet.css">
+<style>
+
+    span {
+        position: relative;
+    }
+
+        span[data-tooltip]:hover::after {
+            width: 25em;
+            height: 7em;
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color:darkslateblue;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            z-index: 1;
+        }
+</style>
+<h1>
+    Test de Personalitate
+</h1>
+
+<br />
+
+
+<form method="post">
+    <div class="container">
+        <div class="left-section">
+            @foreach (var radioSet in GetRadioSets().Take(5))
+            {
+                @if (setNumber == 1)
+                {
+                    <h2>Puncte Forte</h2>
+                    <br />
+                }
+                else if (setNumber == 6)
+                {
+                    <h2>Puncte Slabe</h2>
+                    <br />
+                }
+                <div>
+                    @foreach (var option in radioSet)
+                    {
+                        <input type="radio" name="@option.Key" value="@option.Value" id="@($"option_{option.Key}_{option.Value}")" />
+                        <label for="@($"option_{option.Key}_{option.Value}")">@option.Value</label>
+                        <span id="@($"span_{indiceIntrebare}")" onmouseover="showTextbox('@($"span_{indiceIntrebare}")')" onmouseout="removeTextbox('@($"span_{indiceIntrebare}")')" data-tooltip="">?</span>
+                        indiceIntrebare++;
+                    }
+                </div>
+                <br>
+                <br>
+                setNumber++;
+            }
+        </div>
+        <div class="right-section">
+            @foreach (var radioSet in GetRadioSets().Skip(5))
+            {
+                @if (setNumber == 1)
+                {
+                    <h2>Puncte Forte</h2>
+                }
+                else if (setNumber == 6)
+                {
+                    <h2>Puncte Slabe</h2>
+                }
+                <div>
+                    @foreach (var option in radioSet)
+                    {
+                        <input type="radio" name="@option.Key" value="@option.Value" id="@($"option_{option.Key}_{option.Value}")" />
+                        <label for="@($"option_{option.Key}_{option.Value}")">@option.Value</label>
+                        <span id="@($"span_{indiceIntrebare}")" onmouseover="showTextbox('@($"span_{indiceIntrebare}")')" onmouseout="removeTextbox('@($"span_{indiceIntrebare}")')" data-tooltip="">?</span>
+                        indiceIntrebare++;
+                    }
+                </div>
+                <br>
+                <br>
+                setNumber++;
+            }
+        </div>
+    </div>
+
+    <button class="button" type="button" onclick="submitForm()">Submit</button>
+</form>
+
+<script>
+
+    function submitForm() {
+        var columnCounts = Array.from({ length: 4 }, () => 0);
+
+        var radioSets = document.querySelectorAll('input[type="radio"]');
+        var currentColumn = 0;
+        for (var i = 0; i < radioSets.length; i++) {
+            if (radioSets[i].checked) {
+                columnCounts[currentColumn]++;
+            }
+
+
+            currentColumn = (currentColumn + 1) % 4;
+        }
+
+
+        var maxColumn = columnCounts.indexOf(Math.max(...columnCounts));
+        localStorage.setItem("maxColumn", maxColumn);
+
+        switch (maxColumn) {
+            case 0:
+                window.location.href = "/Home/Rezultat4";
+                break;
+            case 1:
+                window.location.href = "/Home/Rezultat2";
+                break;
+            case 2:
+                window.location.href = "/Home/Rezultat";
+                break;
+            case 3:
+                window.location.href = "/Home/Rezultat3";
+                break;
+            default:
+
+                break;
+        }
+    }
+</script>
+<script>
+
+
+    function showTextbox(spanId) {
+        var span = document.getElementById(spanId);
+        var textboxContent = "";
+
+        switch (spanId) {
+            case "span_1":
+                textboxContent = "Plin de viaţă, cu gesturi vii ale mâinilor şi mimică expresivă a feţei.";
+                break;
+            case "span_2":
+                textboxContent = "Cel care ia iniţiative îndrăzneţe cu hotărârea de a le coordona.";
+                break;
+            case "span_3":
+                textboxContent = "Îi place să examineze componentele unui întreg pentru a vedea relaţiile logice şi adecvate.";
+                break;
+            case "span_4":
+                textboxContent = "Se acomodează uşor şi se simte confortabil în orice situaţie.";
+                break;
+            case "span_5":
+                textboxContent = "Plin de bună dispoziţie şi umor.";
+                break;
+            case "span_6":
+                textboxContent = "Convinge mai degrabă prin logică și fapte decât prin farmec şi putere.";
+                break;
+            case "span_7":
+                textboxContent = "Urmăreşte un proiect până la finalizarea lui înainte de a începe altul.";
+                break;
+            case "span_8":
+                textboxContent = "Pare netulburat şi liniştit şi evită orice conflict.";
+                break;
+            case "span_9":
+                textboxContent = "Cel care vede în prezenţa altora mai degrabă o ocazie de a fi prietenos şi amuzant decât o provocare sau o oportunitate de afaceri.";
+                break;
+            case "span_10":
+                textboxContent = "Cel care este hotărât să-şi urmeze propria cale.";
+                break;
+            case "span_11":
+                textboxContent = "Renunţă din proprie iniţiativă la interesele sale de dragul celorlalţi sau pentru a veni în întâmpinarea acestora.";
+                break;
+            case "span_12":
+                textboxContent = "Acceptă cu uşurinţă punctul de vedere sau dorinţa altcuiva, fără să simtă nevoia de a-şi susţine opinia.";
+                break;
+            case "span_13":
+                textboxContent = "Poate sa te castige pentru orice cauza prin farmecul total al personalitatii sale.";
+                break;
+            case "span_14":
+                textboxContent = "Transforma toate situatiile , intamplarile sau jocurile intr-un concurs si intotdeauna joaca pentru a castiga";
+                break;
+            case "span_15":
+                textboxContent = "Îl intereseaza nevoile si sentimentele celorlalti.";
+                break;
+            case "span_16":
+                textboxContent = "Are trairi emotionale , dar rareori le afiseaza.";
+                break;
+            case "span_17":
+                textboxContent = "Revigorează şi impulsionează sau îi face pe ceilalţi să se simtă bine.";
+                break;
+            case "span_18":
+                textboxContent = "Apt să acționeze repede şi eficient în orice situaţie.";
+                break;
+            case "span_19":
+                textboxContent = "Îi tratează pe ceilalţi cu respect, onestitate și consideraţie.";
+                break;
+            case "span_20":
+                textboxContent = "Autorestrictiv în exprimarea emoţiei sau a entuziasmului.";
+                break;
+            case "span_21":
+                textboxContent = "Bătător la ochi, strident, intervine necuviincios, prea zgomotos.";
+                break;
+            case "span_22":
+                textboxContent = "Comandă, domină, uneori exercitându-şi puterea într-un mod exagerat pentru relaţiile între adulţi.";
+                break;
+            case "span_23":
+                textboxContent = "Se sfiește să atragă atenţia, ca rezultat al complexelor de care suferă.";
+                break;
+            case "span_24":
+                textboxContent = "O persoană a cărei faţă nu îi trădează emoţiile.";
+                break;
+            case "span_25":
+                textboxContent = "O persoană la care dezordinea pune stăpânire pe orice aspect al vieţii.";
+                break;
+            case "span_26":
+                textboxContent = "Găseşte dificil să se raporteze la problemele sau durerile altora.";
+                break;
+            case "span_27":
+                textboxContent = "Cel care are dificultăţi în a ierta sau a uita o nedreptate care i s-a făcut, capabil să poarte ranchiună.";
+                break;
+            case "span_28":
+                textboxContent = "Tinde să nu se entuziasmeze, adesea simţind că oricum nu poate ieşi nimic bun.";
+                break;
+            case "span_29":
+                textboxContent = "Repovesteşte istorii şi incidente pentru a amuza, fără să realizeze că deja a mai spus povestea de câteva ori; în permanenţă simte nevoia să spună ceva.";
+                break;
+            case "span_30":
+                textboxContent = "Adeseori nutreşte sentimente negative ca rezultat al unor ofense reale sau imaginare pe care nu le uită";
+                break;
+            case "span_31":
+                textboxContent = "Se împotriveşte, acţionează împotrivă sau ezită să accepte orice altă cale, cu excepţia celei proprii.";
+                break;
+            case "span_32":
+                textboxContent = "Nu doreşte implicarea sau luptă împotriva acesteia, în special în situatii dificile";
+                break;
+            case "span_33":
+                textboxContent = "Lipsă a memoriei, care de obicei este legată de o lipsă de disciplină și o lipsă de interes pentru înregistrarea mintală a lucrurilor care nu sunt distractive.";
+                break;
+            case "span_34":
+                textboxContent = "Direct, sincer; nu îl deranjează să spună exact ce gândeşte.";
+                break;
+            case "span_35":
+                textboxContent = "Insistent asupra unor probleme sau aspecte neînsemnate, accentuând detaliile triviale.";
+                break;
+            case "span_36":
+                textboxContent = "Deseori încearcă sentimente de profundă îngrijorare, neîncredere sau anxietate.";
+                break;
+            case "span_37":
+                textboxContent = "O persoană care mai mult vorbeşte decât as- cultă, care începe să vorbească fără măcar să realizeze că deja vorbea altcineva.";
+                break;
+            case "span_38":
+                textboxContent = "O persoană care găseşte că este dificil să suporte iritarea altora sau să îi aştepte pe alţii.";
+                break;
+            case "span_39":
+                textboxContent = "Cel care este temător sau îi lipseşte încrederea.";
+                break;
+            case "span_40":
+                textboxContent = "Persoana care găseşte dificil să ia orice decizie. (Nu este vorba de acea personalitate care se apleacă mult asupra fiecărei decizii pentru a o găsi pe cea perfectă.)";
+                break;
+            default:
+                textboxContent = "Conținutul pentru " + spanId;
+                break;
+        }
+
+        span.setAttribute("data-tooltip", textboxContent);
+    }
+
+    function removeTextbox(spanId) {
+        var span = document.getElementById(spanId);
+        span.removeAttribute("data-tooltip");
+    }
+</script>
+
+
+@{
+
+    List<List<KeyValuePair<int, string>>> GetRadioSets()
+    {
+        List<List<KeyValuePair<int, string>>> radioSets = new List<List<KeyValuePair<int, string>>>();
+        for (int i = 1; i <= 10; i++)
+        {
+            switch (i)
+            {
+                case 1:
+
+                    List<KeyValuePair<int, string>> radioSet1 = new List<KeyValuePair<int, string>>();
+                    radioSet1.Add(new KeyValuePair<int, string>(1, "Animat"));
+                    radioSet1.Add(new KeyValuePair<int, string>(1, "Cutezator"));
+                    radioSet1.Add(new KeyValuePair<int, string>(1, "Analitic"));
+                    radioSet1.Add(new KeyValuePair<int, string>(1, "Adaptabil"));
+                    radioSets.Add(radioSet1);
+                    break;
+                case 2:
+
+                    List<KeyValuePair<int, string>> radioSet2 = new List<KeyValuePair<int, string>>();
+                    radioSet2.Add(new KeyValuePair<int, string>(2, "Voios"));
+                    radioSet2.Add(new KeyValuePair<int, string>(2, "Razbunator"));
+                    radioSet2.Add(new KeyValuePair<int, string>(2, "Perseverent"));
+                    radioSet2.Add(new KeyValuePair<int, string>(2, "Pasnic"));
+                    radioSets.Add(radioSet2);
+                    break;
+
+                case 3:
+
+                    List<KeyValuePair<int, string>> radioSet3 = new List<KeyValuePair<int, string>>();
+                    radioSet3.Add(new KeyValuePair<int, string>(3, "Sociabil"));
+                    radioSet3.Add(new KeyValuePair<int, string>(3, "Darz"));
+                    radioSet3.Add(new KeyValuePair<int, string>(3, "Altruist"));
+                    radioSet3.Add(new KeyValuePair<int, string>(3, "Docil"));
+                    radioSets.Add(radioSet3);
+                    break;
+                case 4:
+
+                    List<KeyValuePair<int, string>> radioSet4 = new List<KeyValuePair<int, string>>();
+                    radioSet4.Add(new KeyValuePair<int, string>(4, "Convingator"));
+                    radioSet4.Add(new KeyValuePair<int, string>(4, "Combatant"));
+                    radioSet4.Add(new KeyValuePair<int, string>(4, "Amabil"));
+                    radioSet4.Add(new KeyValuePair<int, string>(4, "Autocontrolat"));
+                    radioSets.Add(radioSet4);
+                    break;
+                case 5:
+
+                    List<KeyValuePair<int, string>> radioSet5 = new List<KeyValuePair<int, string>>();
+                    radioSet5.Add(new KeyValuePair<int, string>(5, "Stimulator"));
+                    radioSet5.Add(new KeyValuePair<int, string>(5, "Capabil"));
+                    radioSet5.Add(new KeyValuePair<int, string>(5, "Respectuos"));
+                    radioSet5.Add(new KeyValuePair<int, string>(5, "Rezervat"));
+                    radioSets.Add(radioSet5);
+                    break;
+                case 6:
+
+                    List<KeyValuePair<int, string>> radioSet6 = new List<KeyValuePair<int, string>>();
+                    radioSet6.Add(new KeyValuePair<int, string>(6, "Obraznic"));
+                    radioSet6.Add(new KeyValuePair<int, string>(6, "Despotic"));
+                    radioSet6.Add(new KeyValuePair<int, string>(6, "Sfios"));
+                    radioSet6.Add(new KeyValuePair<int, string>(6, "Inexpresiv"));
+                    radioSets.Add(radioSet6);
+                    break;
+                case 7:
+
+                    List<KeyValuePair<int, string>> radioSet7 = new List<KeyValuePair<int, string>>();
+                    radioSet7.Add(new KeyValuePair<int, string>(7, "Indisciplinat"));
+                    radioSet7.Add(new KeyValuePair<int, string>(7, "Nepasator"));
+                    radioSet7.Add(new KeyValuePair<int, string>(7, "Neinduplecat"));
+                    radioSet7.Add(new KeyValuePair<int, string>(7, "Apatic"));
+                    radioSets.Add(radioSet7);
+                    break;
+                case 8:
+
+                    List<KeyValuePair<int, string>> radioSet8 = new List<KeyValuePair<int, string>>();
+                    radioSet8.Add(new KeyValuePair<int, string>(8, "Obositor"));
+                    radioSet8.Add(new KeyValuePair<int, string>(8, "Ranchiunos"));
+                    radioSet8.Add(new KeyValuePair<int, string>(8, "Potrivnic"));
+                    radioSet8.Add(new KeyValuePair<int, string>(8, "Reticent"));
+                    radioSets.Add(radioSet8);
+                    break;
+                case 9:
+
+                    List<KeyValuePair<int, string>> radioSet9 = new List<KeyValuePair<int, string>>();
+                    radioSet9.Add(new KeyValuePair<int, string>(9, "Neatent"));
+                    radioSet9.Add(new KeyValuePair<int, string>(9, "Franc"));
+                    radioSet9.Add(new KeyValuePair<int, string>(9, "Scarbos"));
+                    radioSet9.Add(new KeyValuePair<int, string>(9, "Fricos"));
+                    radioSets.Add(radioSet9);
+                    break;
+                case 10:
+
+                    List<KeyValuePair<int, string>> radioSet10 = new List<KeyValuePair<int, string>>();
+                    radioSet10.Add(new KeyValuePair<int, string>(10, "Care Intrerupe"));
+                    radioSet10.Add(new KeyValuePair<int, string>(10, "Intolerant"));
+                    radioSet10.Add(new KeyValuePair<int, string>(10, "Temator"));
+                    radioSet10.Add(new KeyValuePair<int, string>(10, "Nehotarat"));
+                    radioSets.Add(radioSet10);
+                    break;
+
+                default:
+
+                    List<KeyValuePair<int, string>> defaultRadioSet = new List<KeyValuePair<int, string>>();
+                    defaultRadioSet.Add(new KeyValuePair<int, string>(1, "Opțiune A default"));
+                    defaultRadioSet.Add(new KeyValuePair<int, string>(2, "Opțiune B default"));
+                    defaultRadioSet.Add(new KeyValuePair<int, string>(3, "Opțiune C default"));
+                    defaultRadioSet.Add(new KeyValuePair<int, string>(4, "Opțiune D default"));
+                    radioSets.Add(defaultRadioSet);
+                    break;
+            }
+
+        }
+        return radioSets;
+
+    }
+
+}
+
+
+
+
+
+

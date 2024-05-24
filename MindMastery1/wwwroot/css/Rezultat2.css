@@ -1,0 +1,45 @@
+﻿/* Stiluri pentru banner */
+.banner {
+    background-color: #b8c1ec;
+    padding: 20px 0;
+}
+
+/* Stiluri pentru navigație */
+.navigation {
+    text-align: center;
+}
+
+    .navigation a {
+        color: #232946;
+        text-decoration: none;
+        margin: 0 20px;
+    }
+
+/* Stiluri pentru titlu și explicație */
+.container {
+    text-align: center;
+    margin-top: 50px;
+    color: #fffffe;
+}
+
+.headline {
+    color: #fffffe;
+}
+
+.paragraph {
+    color: #b8c1ec;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #232946;
+    color: #fffffe;
+}
+
+.container img {
+    margin-top: 50px;
+}
